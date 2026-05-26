@@ -129,13 +129,44 @@ dados_analise <- dados_completos |>
     mutate(
       nivel_credito = case_when(
         credito_por_cooperado < 1400 ~ "Baixo",
-        credito_por_cooperado >= 1400 & _ < 1700 ~ "Médio",
+        credito_por_cooperado >= 1400 & credito_por_cooperado < 1700 ~ "Médio",
         credito_por_cooperado >= 1700 ~ "Alto"
       )
     ) |> 
     group_by(tipo_agencia, nivel_credito) |> 
     summarise(
       volume_total = sum(volume_credito)
-      n_obs = n()
+      n_obs  = n()
     ) |> 
     arrange(desc(volume_total))
+  
+resumo_por_tipo
+
+
+# resolução 5
+
+# Resposta do Exercício 4:
+# Cidade com maior volume_total: Divinópolis
+# Cidade com maior media_dos_creditos_por_cooperado: Formiga
+
+
+# Exercício 5 ---------------------------------------------------------
+
+# classifica nivel_credito e resume por tipo_agencia
+resumo_por_tipo <- dados_analise |>
+  mutate(
+    nivel_credito = case_when(
+      credito_por_cooperado < 1400 ~ "Baixo",
+      credito_por_cooperado >= 1400 & credito_por_cooperado < 1700 ~ "Médio",
+      credito_por_cooperado >= 1700 ~ "Alto"
+    )
+  ) |>
+  group_by(tipo_agencia, nivel_credito) |>
+  summarise(
+    volume_total = sum(volume_credito),
+    n_obs        = n()
+  ) |>
+  arrange(desc(volume_total))
+
+# imprime o objeto
+resumo_por_tipo
