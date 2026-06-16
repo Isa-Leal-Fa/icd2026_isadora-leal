@@ -1,0 +1,173 @@
+---
+lang: pt-BR
+title: "Resolução da Lista de Exercícios 6"
+author: Isadora Leal
+date: today
+format:
+  html:
+    theme: flatly
+    embed-resources: true
+    toc: true
+execute:
+  eval: true
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+
+# Exibe valores numéricos sem notação científica
+options(digits = 5, scipen = 999)
+
+# pacotes utilizados
+library(here)
+library(tidyverse)
+library(tidyplots)
+
+# Permite que os gráficos do tidyplots usem o espaço disponível no HTML
+tidyplots_options(width = NA, height = NA)
+
+# Importa o objeto dados_marketing_limpos.rds
+caminho_dados <- here("dados/limpos/dados_marketing_limpos.rds")
+dados_marketing <- read_rds(caminho_dados)
+```
+
+
+
+## Exercício 1
+
+**a.**
+```{r}
+dados_marketing |>
+  summarize(
+    # Média amostral
+    media = mean(gasto_total),
+    
+    # Mediana amostral
+    mediana = median(gasto_total)
+  )
+
+```
+
+
+
+
+
+
+**b.**
+```{r}
+dados_marketing |>
+  summarize(
+    # Média amostral
+    media = mean(gasto_total),
+    
+    # Desvio-padrão amostral
+    desvio_padrao = sd(gasto_total),
+    
+    # CV amostral percentual
+    cv_percentual = 100 * desvio_padrao / media
+  )
+```
+
+
+
+
+**c.**
+```{r}
+# Quantis amostrais selecionados
+dados_marketing |>
+  summarize(
+    # Mínimo amostral e percentil 5
+    p0 = quantile(gasto_total, 0),
+    p5 = quantile(gasto_total, 0.05),
+    
+    # Quartis amostrais
+    q1 = quantile(gasto_total, 0.25),
+    mediana = quantile(gasto_total, 0.50),
+    q3 = quantile(gasto_total, 0.75),
+    
+    # Percentil 95 e máximo amostral
+    p95 = quantile(gasto_total, 0.95),
+    p100 = quantile(gasto_total, 1)
+  )
+```
+
+
+
+Interpretações:
+
+- **p5**: O percentil 5 mostra que durante o período analisado, o gasto total 
+em marketing foi menor ou igual a 84, 14 mil dólares
+
+
+**d.** 
+
+
+
+
+## Exercício 2
+
+
+```{r}
+# Dados sobre o desempenho semanal (R$ mil) de duas equipes de vendas
+desempenho_equipes <- tibble(
+  equipe = rep(c("A", "B"), each = 10),
+  desempenho = c(85, 92, 78, 110, 95, 105, 115, 98, 102, 250,
+                 120, 115, 125, 118, 122, 130, 115, 120, 125, 122)
+)
+```
+
+
+**a.** 
+
+
+
+
+**b.** 
+
+
+
+
+## Exercício 3
+
+
+**a.** 
+
+
+
+**b.** 
+
+
+
+**c.**
+
+
+
+
+**d.**
+
+
+
+
+## Exercício 4
+
+
+**a.**
+
+
+
+
+**b.** 
+
+
+
+
+**c.**
+
+
+
+
+**d.**
+
