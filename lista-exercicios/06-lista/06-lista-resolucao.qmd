@@ -122,7 +122,160 @@ desempenho_equipes <- tibble(
 
 **a.** 
 
+## Exercício 1
 
+
+**a.**
+
+```{r}
+#gasto total médio e mediano
+dados_marketing |> 
+  summarize(
+    media = mean(gasto_total),
+    
+    mediana = median(gasto_total)
+    
+  )
+```
+
+
+
+
+
+**b.**
+```{r}
+dados_marketing |>
+  summarize(
+    desvio_padrao = sd(gasto_total),
+    
+    iqr = IQR(gasto_total)
+  )
+```
+
+
+
+
+
+**c.**
+```{r}
+dados_marketing |> 
+  summarize(
+    p5 = quantile(gasto_total,0.05 ),
+    q1 = quantile (gasto_total,0.25),
+    mediana = quantile(gasto_total , 0.50),
+    q3 = quantile(gasto_total, 0.75),
+    p95 =quantile(gasto_total,0.95)
+  )
+```
+interpretações :
+
+
+- **p5** :o percentil p5 mostra que durante o período analisado ,o gasto total em 
+marketing foi menor ou igual a 84.14 mil dólares em 5% das semanas e foi maior 
+que esse valor em 95% das semanas .
+
+- **Q1**:O percentil q1 mostra que durante o período analisado ,o gasto total 
+em marketing foi menor ou igual a 99.56 mil dólares em 25% das semanas e foi 
+maior que esse valor em 75% das semanas .
+ 
+- **mediana**:O percentil da mediana mostra que durante o período analisado ,o 
+gasto total em marketing foi menor ou igual a 110.25 mil dólares em 50% 
+das semanas e foi maior que esse valor em 50% das semanas .
+
+- **Q3**:O percentil q3 mostra que durante o período analisado ,o gasto total 
+em marketing foi menor ou igual a 122.13 mil dólares em 75% das semanas e foi 
+maior que esse valor em 25 %  das semanas .
+
+- **p95**:O percentil P95 mostra que durante o período analisado ,o gasto total 
+em marketing foi menor ou igual a 152.49 mil dólares em 95% das semanas e foi 
+maior que esse valor em 5% das semanas .
+
+
+**d.** 
+- **Valor Tipico**: a média (cerca de $ 113 mil) e a mediana (aproximadamente $110 mil)
+do gasto totalestão proximas. A média um pouco sugere influencia de algumas semanas
+com gasto mais alto.Para descrever o investimento semanal típico, a mediana é uma boa escolha,
+pois reepresenta o centro da distribuição dos dados e é menos afetada por valores 
+muito altos ou baixos em relação à maioria dos dados. Como média e a mediana do
+gasto total estão proximas, usar o gasto total médio também seria aceitavel desde que
+a resposta mencionasse a leve influencia dos valores altos.
+
+- **Dispersão (variabilidade)**: o intervalo interquartil é menor afetado por semanas 
+de gasto nuito alto ou muito baixo, porque ele mede a distancia entre q1 e q3, ou seja,
+ele identifica a faixa onde está a metade intermediaria das semanas, depois de ordenar
+os gastos do menor para o maior. já o desvio-padrãosa a distancia entre os gastos
+de todas as semanas em relação ao gasto médio, por isso, semanas com gasto muito alto 
+ou muito baixo podem afetar bastante seu valor.
+
+- **Semanas Atípicas**: pelo critério deefinido no enunciado, a faixa usual que
+concentrra 90% das semanas vai de aproximadamente $ 84 mil (p5) a $ 152 mil (p95).
+Acima de $ 152 mil, a semana entra no grupo dos 5% maiores gastos e merece atenção
+da equipe. Valores abaixo de $ 84 mil também ficam foram da Faixa usual, 
+mas por gato muito baixo.
+
+
+
+## Exercício 2
+
+
+```{r}
+# Dados sobre o desempenho semanal (R$ mil) de duas equipes de vendas
+desempenho_equipes <- tibble(
+  equipe = rep(c("A", "B"), each = 10),
+  desempenho = c(85, 92, 78, 110, 95, 105, 115, 98, 102, 250,
+                 120, 115, 125, 118, 122, 130, 115, 120, 125, 122)
+)
+```
+
+
+**a.** 
+# calcule: desvio-padrão, amplitude, IQR e coeficiente de variação.
+{r}
+desempenho_equipes |> 
+  group_by(equipe) |> 
+  sumarise(
+    desvio_padrao = sd (desempenho),
+    amplitude = max(desempenho) - min(desempenho),
+    intervalo_interquartil = IQR(desempenho),
+    cv = (sd(dsempenho)/mean(desempenho))*100
+  )
+
+
+
+**b.** 
+Neste item, uma equipe mais consistente é aquela cujo desempenho semanal
+varia menos de uma semana para outra, ou seja, seis resultados ficam mais 
+proximos entre si, seem grandes variacoes. Isso não significa, por si só, que a 
+equipe seja melhor, neste caso estamos comparando a dispersão ou variabilidade 
+dos desempenhos.
+
+A equipe B foi mais consistente. Todas as medidas de variabilidade apontam 
+nessa direção:
+desvio-padrao de cerca de 5 contra 49, amplitude de 15 contra 172, intervalo 
+interquartil
+de cerca de 6 contra 16 e cv de 4% contra 44%. O coeficiente de variacao 
+resume bem a
+comparação, porque mede a variabilidadee  em relação ao nível médio de 
+desempenho
+de cada equipe.
+
+Efeito do valor 250: e valor aumenta muito o desvio-padrão, a amplitude e o cv
+da equipe A.
+O intervalo interquartil é bem menos afetado, porque mede a distancia entre o
+1º e o 3º
+quartil: ele sintetiza a faixa onde está a metade intermediaria das semanas, 
+depois deordenar os desempenhos do menor para o maior. A mediana também muda
+pouco diantedesse valor extremo. Por isso, o intervalo intequartil e a mediana 
+são medidasmaisrobustas,isto é medidas qu mudam menos quando aparece um valor 
+muito altoou muito baixo.
+
+Concluir que uma equipa é melhor: não com apenas estes dados. São somente 10 
+semanas por equipe, e o valor 250 pode representar uma semansa excepcional, uma 
+meta especial ou até um erro  de registro. Antes de concluir, seria preciso 
+entender a origem desse valor, verificar se as equipes atuarm em dondições 
+comparaveis (mercado, metas, carteira de clientes e periodo ) e analisar mais 
+semanas. a analise mosta uma diferença decritiva , mas ainda não sustenta uma
+conlcusão geral sobre desempenho.
 
 
 **b.** 
@@ -135,18 +288,68 @@ desempenho_equipes <- tibble(
 
 **a.** 
 
+Lembre-se que você deve definir um número adequado de intervalos (bins) para 
+construir um histograma e que usamos a regra de sturges para determinar esse 
+número:
+
+```{r}
+# Calcula o tamanho da amostra
+n <- length(dados_marketing$receita_vendas)
+n
+
+# Calcula o número de bins pela regra de Sturges
+k <- ceiling(1 + log2(n))
+k
+```
+Assim, bins = 9 é um número adequado de intervalos para construir o histograma
+
+```{r}
+dados_marketing |> 
+  tidyplot(x = gasto_total) |> 
+  add_histogram(bins = 9, fill = "steelblue") |> 
+  adjust_x_axis_title("Gasto total semanal em marketing (em $ mil)") |> 
+  adjust_y_axis_title("Número de semanas") |> 
+  add_caption("Fonte: dados simulados pelo professor") |> 
+  adjust_font(fontsize = 12)
+```
+
+
 
 
 **b.** 
 
+```{r}
+dados_marketing |> 
+  tidyplot(y = gasto_total) |> 
+  add_boxplot() |> 
+  adjust_y_axis_title("Gasto total semanal em marketing (em $ mil") |> 
+  adjust_font(fontsize = 12)
+```
 
 
-**c.**
+**c.** O histograma e o boxplot  mostram que a distribuição empirica do gasto 
+total semanal em marketing está centrada em torno de $ 110 mil e que apresenta
+alguma assimetria positiva, devida a algumas semanas com gasto mais alto do que
+a maioria das semanas.
+
+Cerca de 5 semanas aparecem destacadas mo boxplot como valores extremos (ou 
+outliers) muito maiores do que o observado na maioria das semanas. Essas semanas
+com gasto total muito altos são coerentes com o que o histograma mostra: existem
+poucas semanas com gasto muito acima do típico.
 
 
 
+**d.** Sim, o histograma e o boxplot contam a mesma história: o gasto total está
+concentrado em torno de $ 110 mil, com algumas semanas apresentando gasto maior 
+que provocam alguma assimetria positiva na distribuição.
 
-**d.**
+Recomendação: Investigar as cinco semanas sinalizadas com outliers pelo boxplot.
+Elas podem corresponder a campanhas especificas, sazonalidade ou erro de 
+resgistro. Também seria importante verificar se essas semanas geraram maior 
+receita ou outro resultado esperado.
+
+
+
 
 
 
@@ -155,11 +358,30 @@ desempenho_equipes <- tibble(
 
 
 **a.**
+```{r}
+dados_marketig |> 
+  tidyplot(x = status_concorrencia, y = receita_vendas) |> 
+  add_boxplot() |> 
+  adjust_x_axis_title("Atividade da concorrência") |> 
+  adjust_y_axis_title("Receita semanal de vendas (em $ mil)") |> 
+  add_caption("Fonte: dados simulados pelo professor. ") |> 
+  adjust_font(fontsize = 12)
+```
 
 
 
 
 **b.** 
+```{r}
+dados_marleting |> 
+  group_by(status_concorrencia) |> 
+  summarise(
+    n = n(),
+    media = mean(receita_vendas),
+    mediana = median(receita_vendas),
+    cv = (sd(receita_vendas)/mean(receita_vendas))*100
+  )
+```
 
 
 

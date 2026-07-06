@@ -1,0 +1,242 @@
+---
+title: "Resolução da Avaliação 3 (34 pontos)"
+subtitle: "Introdução à Ciência de Dados <br> Bacharelado em Administração"
+lang: pt-BR
+author: 
+- Evelyn Cristine Marçal Leal
+- Isadora Leal Faria
+- Kerollayne Borges Oliveira Souza
+- Sara Ferreira Pâmela
+date: "2026-07-06"
+title-block-banner: "#27445C"
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| include: false
+
+# não exibe números em notação científica
+options(digits = 5, scipen = 999)
+
+# pacotes utilizados
+library(here)
+library(tidyverse)
+library(tidyplots)
+
+# Permite que os gráficos do tidyplots usem o espaço disponível
+tidyplots_options(width = NA, height = NA)
+
+# Guarda o caminho do arquivo CSV dentro do projeto RStudio
+caminho_dados <- here("dados/brutos/belezar_vendas_diarias.csv")
+
+# Lê o arquivo CSV e cria o objeto dados_belezar
+dados_belezar <- read_csv(caminho_dados)
+```
+
+
+
+# Questão 1 
+
+
+**a)** 
+
+```{r}
+dados_belezar|>
+  summarise(
+    receita_media = mean(receita),
+    receita_mediana = median(receita),
+    desvio_padrao = sd(receita),
+    q1 = quantile(receita, 0.25),
+     q3 = quantile(receita, 0.75),
+     p9 = quantile(receita, 0.9)
+  )
+```
+
+
+
+**b)**
+A mediana (8,9) descreve melhor a receita de um dia típico da empresa.
+Justificativa:A receita diária da empresa possui dois cenários bem distintos: 
+dias com promoção e dias sem promoção. A média (10,274) é muito sensível a 
+valoresextremos e acabou sendo inflada (puxada para cima) pelas receitas muito 
+altas dos dias com promoção. Já a mediana (8,9) é uma medida robusta que ignora 
+essespicos, representando com maior fidelidade o faturamento de um dia 
+comum/típico da empresa.
+
+
+**c)**
+
+O percentil 90 resultou em R$ 16.080,00, isso significa que, em 90% dos dias 
+analisados, a empresa apresentou uma receita diária de até R$ 16.080,00, 
+enquanto em apenas 10% dos dias a receita foi superior a esse valor.
+
+
+# Questão 2
+
+**a)** 
+```{r}
+n <- length(dados_belezar$receita)
+n
+
+k <- ceiling(1 + log2(n))
+k
+
+dados_belezar |>
+  tidyplot(x = receita) |>
+  add_histogram(bins = 10, fill = "steelblue") |>
+  adjust_y_axis_title("Dias das vendas") |>
+  adjust_x_axis_title("Receita diária de vendas, em R$ mil (milhares de reais)") |>
+  add_caption("Fonte: dados simulados pelo professor para avaliação.") |>
+  adjust_font(fontsize = 14)
+```
+
+
+
+**b)**
+A distribuição dos dados no gráfico é assimétrica à direita (também chamada de 
+assimetria positiva), pois a cauda mais longa se estende em direção aos valores
+maiores (lado direito).
+
+A maior parte dos dias se concentra na faixa de 7,5 a 15 mil reais 
+(ou aproximadamente de 5 a 15 mil reais), representada pela barra mais alta do 
+gráfico.
+A maioria dos dias é comum (sem promoção), gerando faturamento baixo (entre 0 e 
+15 mil) e mantendo a mediana fixa nessa faixa central. Já os raros dias de 
+promoção registram picos isolados de vendas muito altas (na cauda da direita). 
+Como a média é sensível a esses valores extremos e soma tudo, ela é inflacionada
+e puxada para cima, tornando-se maior que a mediana.
+
+
+# Questão 3
+
+
+**a)** 
+
+```{r}
+dados_belezar |> 
+  tidyplot(x = status_promocao, y = receita) |> 
+  add_boxplot() |> 
+  adjust_x_axis_title("Atividade da promoção") |> 
+  adjust_y_axis_title("Receita diária de vendas, em R$ mil (milhares de reais)") |> 
+  add_caption("Fonte: dados simulados pelo professor para avaliação. ") |> 
+  adjust_font(fontsize = 14)
+```
+
+**b)**
+
+O grupo com promoção parece ter uma receita maior na maioria dos dias e também 
+varia mais. Já o grupo sem promoção tem receitas menores e mais estáveis. Mesmo
+assim, não dá para dizer que a promoção foi a causa dessa diferença, só observar 
+que ela existe nos dados.
+
+
+# Questão 4
+
+
+A. [ ]
+
+ 
+B. [ ]
+
+
+C. [x]
+
+
+D. [ ]
+
+
+
+
+# Questão 5
+
+
+A. [ ]
+
+ 
+B. [x]
+
+
+C. [ ]
+
+
+D. [ ]
+
+
+
+
+# Questão 6
+
+
+A. [ ]
+
+ 
+B. [ ]
+
+
+C. [ ]
+
+
+D. [x]
+
+
+
+
+# Questão 7
+
+
+A. [ ]
+
+ 
+B. [x]
+
+
+C. [ ]
+
+
+D. [ ]
+
+
+
+
+# Questão 8
+
+
+
+A. [x]
+
+ 
+B. [ ]
+
+
+C. [ ]
+
+
+D. [ ]
+
+
+
+
+# Questão 9
+
+
+
+A. [ ]
+
+ 
+B. [ ]
+
+
+C. [x]
+
+
+D. [ ]
